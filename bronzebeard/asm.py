@@ -751,6 +751,8 @@ AND        = partial(r_type,   opcode=0b0110011, funct3=0b111, funct7=0b0000000)
 FENCE      = partial(fence,    opcode=0b0001111, funct3=0b000, rd=0, rs1=0, fm=0)  # special syntax*
 ECALL      = partial(i_type,   opcode=0b1110011, funct3=0b000, rd=0, rs1=0, imm=0)  # special syntax
 EBREAK     = partial(i_type,   opcode=0b1110011, funct3=0b000, rd=0, rs1=0, imm=1)  # special syntax
+MRET       = partial(i_type,   opcode=0b1110011, funct3=0b000, rd=0, rs1=0, imm=0b001100000010)  # special syntax
+WFI        = partial(i_type,   opcode=0b1110011, funct3=0b000, rd=0, rs1=0, imm=0b000100000101)  # special syntax
 
 # RV32/RV64 "Zifencei" Instruction-Fetch Fence
 FENCE_I    = partial(i_type,   opcode=0b0001111, funct3=0b001, rd=0, rs1=0, imm=0)  # special syntax
@@ -864,6 +866,8 @@ I_TYPE_INSTRUCTIONS = {
 IE_TYPE_INSTRUCTIONS = {
     'ecall':      ECALL,
     'ebreak':     EBREAK,
+    'mret':       MRET,
+    'wfi':        WFI,
     'fence.i':    FENCE_I,
 }
 
