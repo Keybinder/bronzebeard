@@ -2464,16 +2464,29 @@ def parse_item(line_tokens):
         return CATypeInstruction(line, name, rd_rs1, rs2)
     # cb-type instructions
     elif head in CB_TYPE_INSTRUCTIONS:
-        name, rs1, *imm = tokens
+        if len(tokens) != 3:
+            raise AssemblerError('cb-type instructions require exactly 3 args', line)
+        name, rs1, reference = tokens
         name = name.lower()
+        if is_int(reference):
+            imm = [reference]
+        else:
+            imm = ['%offset', reference]
         imm = parse_immediate(imm, line)
         return CBTypeInstruction(line, name, rs1, imm)
     # cj-type instructions
     elif head in CJ_TYPE_INSTRUCTIONS:
-        name, *imm = tokens
+        if len(tokens) != 2:
+            raise AssemblerError('cj-type instructions require exactly 2 args', line)
+        name, reference = tokens
         name = name.lower()
+        if is_int(reference):
+            imm = [reference]
+        else:
+            imm = ['%offset', reference]
         imm = parse_immediate(imm, line)
         return CJTypeInstruction(line, name, imm)
+
     # pseudo instructions
     elif head in PSEUDO_INSTRUCTIONS:
         name, *args = tokens
